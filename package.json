@@ -1,0 +1,25 @@
+{
+  "name": "mavex-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon"
+  },
+  "author": "Max Carlesso dos Santos",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "helmet": "^3.16.0",
+    "ioredis": "^4.6.2",
+    "joi": "^14.3.1",
+    "jsonwebtoken": "^8.5.1",
+    "metroplex": "^1.0.1",
+    "mongoose": "^5.4.19",
+    "omega-supreme": "^3.0.0",
+    "primus": "^7.3.2",
+    "primus-emit": "^1.0.0",
+    "ws": "^6.2.0"
+  }
+}
