@@ -1,19 +1,20 @@
-## ROUTES ##
+# Routes
 
-api/ #GET
-api/login #POST
-api/register #POST
-api/logout #GET
-api/dashboard #GET
-api/dashboard/create-project #POST
-api/dashboard/config-project #PUT
-api/dashboard/remove-project #DELETE
-api/workspace/p/{projectId} #GET
-api/channels/p/{projectId} #GET 
-api/xve/p/{projectId} #GET
+* api/ #GET
+* api/login #POST
+* api/register #POST
+* api/logout #GET
+* api/dashboard #GET
+* api/dashboard/create-project #POST
+* api/dashboard/config-project #PUT
+* api/dashboard/remove-project #DELETE
+* api/workspace/p/{projectId} #GET
+* api/channels/p/{projectId} #GET 
+* api/xve/p/{projectId} #GET
 
-## DATABASE ##
+# Schema
 
+```
 User {
     id: String,
     level: Number,
@@ -109,3 +110,4 @@ Channel {
 Xve {
 
 }
+```
