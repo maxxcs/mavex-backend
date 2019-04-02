@@ -1,7 +1,7 @@
 {
   "name": "mavex-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Mavex API Service",
   "main": "app.js",
   "scripts": {
     "dev": "nodemon"

@@ -1,34 +1,44 @@
 # Mavex API Service
 
+
+
 # Routes
 
-* /api/ - GET
-* /api/login - POST
-* /api/register - POST
-* /api/logout - GET
+```
+/api/ - GET
+/api/login - POST
+/api/register - POST
+/api/logout - GET
 
-* /api/dashboard - GET
-* /api/dashboard/create-project - POST
-* /api/dashboard/config-project - PUT
-* /api/dashboard/remove-project - DELETE
-* /api/dashboard/search?q={query} - GET
-* /api/dashboard/user - GET
-* /api/dashboard/user - POST
+/api/dashboard - GET
+/api/dashboard/create-project - POST
+/api/dashboard/config-project - PUT
+/api/dashboard/remove-project - DELETE
+/api/dashboard/search?q=:query - GET
+/api/dashboard/user - GET
+/api/dashboard/user - POST
 
-* /api/workspace/{projectId} - GET
-* /api/workspace/{projectId}/file/{fileId} - GET
-* /api/channels/{projectId} - GET 
-* /api/channels/{projectId}/ch/{channelId} - GET
-* /api/xves/{projectId} - GET
-* /api/xves/{projectId}/ve/{xveId} - GET
+/api/workspace/:projectId - GET
+/api/workspace/:projectId/file/:fileId - GET
+/api/channels/:projectId - GET 
+/api/channels/:projectId/ch/:channelId - GET
+/api/xves/:projectId - GET
+/api/xves/:projectId}/ve/:xveId - GET
+```
 
 #  In-memory Data Structure Store
 
 ```
-user:{id}
 project:{id}
+project:{id}:users
+project:{id}:files
+project:{id}:channels
+project:{id}:xves
+user:{id}
 file:{id}
+file:{id}:users
 channel:{id}
+channel:{id}:users
 xve:{id}
 ```
 
