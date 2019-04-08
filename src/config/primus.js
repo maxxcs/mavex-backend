@@ -31,7 +31,7 @@ module.exports = server => {
     done();
   });
 
-  primus.validate('editor:isReady', (data, next) => {
+  primus.validate('editor:requestSync', (data, next) => {
     next();
   });
 
@@ -52,14 +52,14 @@ module.exports = server => {
     await Store.addUserOnFile(null, spark.id);
     primus.forward.broadcast({ emit: ['server:broadcast', `UserID:${spark.id} connected.`] }, (err, result) => { });
 
-    spark.on('editor:isReady', async () => {
+    spark.on('editor:requestSync', async data => {
       const content = await Store.getFileContent();
-      spark.emit('server:setFileContent', content);
+      spark.emit('server:sendFileContent', content);
     });
 
-    spark.on('editor:contentChanged', async data => {
+    spark.on('editor:contentChanged', async operation => {
       const users = await Store.getUsersToBroadcastOnFile(null, spark.id);
-      primus.forward.sparks(users, { emit: ['server:executeEdits', data] }, (err, result) => { });
+      primus.forward.sparks(users, { emit: ['server:executeOperation', operation] }, (err, result) => {});
     });
 
     spark.on('editor:sendFileContent', async data => {
