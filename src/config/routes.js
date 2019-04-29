@@ -53,11 +53,11 @@ router.get('/channels/:projectId', (req, res) => {
 router.get('/channels/:projectId/ch/:channelId', (req, res) => {
   require('../controllers/project-controller').channel(req, res);
 });
-router.get('/xves/:projectId', (req, res) => {
-  require('../controllers/project-controller').xves(req, res);
+router.get('/terminals/:projectId', (req, res) => {
+  require('../controllers/project-controller').terminals(req, res);
 });
-router.get('/xves/:projectId/ve/:xveId', (req, res) => {
-  require('../controllers/project-controller').xve(req, res);
+router.get('/terminals/:projectId/mvx/:terminalId', (req, res) => {
+  require('../controllers/project-controller').terminal(req, res);
 });
 
 module.exports = app => app.use('/api', router);

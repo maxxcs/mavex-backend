@@ -14,10 +14,10 @@ module.exports.channel = async (req, res) => {
   res.json({ controller: 'project', location: 'ch' });
 };
 
-module.exports.xves = async (req, res) => {
-  res.json({ controller: 'project', location: 'xves' });
+module.exports.terminals = async (req, res) => {
+  res.json({ controller: 'project', location: 'terminals' });
 };
 
-module.exports.xve = async (req, res) => {
-  res.json({ controller: 'project', location: 've' });
+module.exports.terminal = async (req, res) => {
+  res.json({ controller: 'project', location: 'terminal' });
 };

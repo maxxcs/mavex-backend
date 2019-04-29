@@ -22,8 +22,8 @@
 /api/workspace/:projectId/file/:fileId - GET
 /api/channels/:projectId - GET 
 /api/channels/:projectId/ch/:channelId - GET
-/api/xves/:projectId - GET
-/api/xves/:projectId}/ve/:xveId - GET
+/api/terminals/:projectId - GET
+/api/terminals/:projectId}/mvx/:terminalId - GET
 ```
 
 #  In-memory Data Structure Store
@@ -33,13 +33,13 @@ project:{id}
 project:{id}:users
 project:{id}:files
 project:{id}:channels
-project:{id}:xves
+project:{id}:terminals
 user:{id}
 file:{id}
 file:{id}:users
 channel:{id}
 channel:{id}:users
-xve:{id}
+terminal:{id}
 ```
 
 # Database Schema
@@ -85,7 +85,7 @@ Project {
             closeProject: Number,
             userManagement: Number,
             console: Number,  
-            xve: Number  
+            mvx: Number  
         },
         files: { 
             read: Number,
@@ -118,7 +118,7 @@ Project {
         path: String
     }],
     channels: [],
-    xves: [],
+    mvxs: [],
     tags: [ String ]
 }
 
@@ -143,7 +143,7 @@ Channel {
 
 }
 
-Xve {
+Terminal {
 
 }
 ```

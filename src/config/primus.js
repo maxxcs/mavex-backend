@@ -13,9 +13,9 @@ module.exports = server => {
     transformer: 'websockets',
     fortress: 'spark',
     method: 'PUT',
-    password: 'supreme',
-    username: 'omega',
-    url: '/primus/omega/supreme',
+    username: 'mavex',
+    password: 'mavex',
+    url: '/broadcast',
     concurrently: 10,
     namespace: 'cluster',
     redis: new Redis()
@@ -35,11 +35,11 @@ module.exports = server => {
     next();
   });
 
-  primus.validate('editor:contentChanged', (data, next) => {
+  primus.validate('editor:sendFileContent', (data, next) => {
     next();
   });
 
-  primus.validate('editor:sendFileContent', (data, next) => {
+  primus.validate('editor:broadcastOperation', (data, next) => {
     next();
   });
 
@@ -57,13 +57,15 @@ module.exports = server => {
       spark.emit('server:sendFileContent', content);
     });
 
-    spark.on('editor:contentChanged', async operation => {
-      const users = await Store.getUsersToBroadcastOnFile(null, spark.id);
-      primus.forward.sparks(users, { emit: ['server:executeOperation', operation] }, (err, result) => {});
-    });
-
     spark.on('editor:sendFileContent', async data => {
       await Store.setFileContent(null, data);
+    });
+
+    spark.on('editor:broadcastOperation', async operation => {
+      const users = await Store.getUsersToBroadcastOnFile(null, spark.id);
+      setTimeout(() => {
+        primus.forward.sparks(users, { emit: ['server:executeOperation', operation] }, (err, result) => {});
+      }, 1);
     });
 
     spark.on('xve:requestSync', async data => {
@@ -71,6 +73,7 @@ module.exports = server => {
     });
 
     spark.on('end', async () => {
+      //Remove the spark from all files and projects
       await Store.removeUserFromFile(null, spark.id);
     });
   });
