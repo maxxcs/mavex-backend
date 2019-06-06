@@ -55,6 +55,9 @@ const UserSchema = new mongoose.Schema({
   },
   tags: {
     type: [String]
+  },
+  status: {
+    type: Number
   }
 });
 

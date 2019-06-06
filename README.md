@@ -64,14 +64,15 @@ User {
     editor: { config },
     createdAt: Date,
     lastLogin: Date,
-    tags: [ String ]
+    tags: [ String ],
+    status: Number
 }
 
 Project {
     id: String,
     name: String,
-    isListed: Boolean,
-    isPrivate: Boolean,
+    isPublic: Boolean,
+    isLocked: Boolean,
     password: String,
     createdAt: Date,
     owner: {
@@ -79,36 +80,52 @@ Project {
         username: String
     },
     privilegeSchema: {
-        general: {
-            admin: Number,
-            openProject: Number,
-            closeProject: Number,
-            userManagement: Number,
-            console: Number,  
-            mvx: Number  
-        },
+        admin: Number
         files: { 
             read: Number,
             write: Number,
-            create: Number,
-            remove: Number,
-            cursor: Number
+            edit: Number
         },
         channels: {
             read: Number,
             write: Number,
-            edit: Number,
-            remove: Number
+            edit: Number
+        },
+        terminals: {
+            read: Number,
+            write: Number,
+            edit: Number
         }
     },
+    privilegeGroups: [{
+      id: String,
+      name: String,
+      privileges: {
+        admin: Number
+        files: { 
+            read: Number,
+            write: Number,
+            edit: Number
+        },
+        channels: {
+            read: Number,
+            write: Number,
+            edit: Number
+        },
+        terminals: {
+            read: Number,
+            write: Number,
+            edit: Number
+        }
+      }
+    }],
     users: [{
         id: String,
         username: String,
-        privileges: {
-            general: Number,
-            files: Number,
-            channels: Number
-        },
+        privilegeGroups: [{
+          id: String,
+          name: String
+        }]
         tags: [ String ]
     }],
     files: [{
@@ -118,8 +135,9 @@ Project {
         path: String
     }],
     channels: [],
-    mvxs: [],
-    tags: [ String ]
+    terminals: [],
+    tags: [ String ],
+    status: Number
 }
 
 File {
@@ -131,12 +149,14 @@ File {
     privileges: {
         read: Number,
         write: Number,
+        edit: Number,
         remove: Number,
         cursor: Number
     },
     content: String,
     tags: [ String ],
-    lastUpdate: Date
+    lastUpdate: Date,
+    status: Number
 }
 
 Channel {
