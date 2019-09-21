@@ -1,17 +1,28 @@
-const http = require('http');
-const express = require('express');
-const cors = require('cors');
-const helmet = require('helmet');
+const fastify = require('fastify');
+const path = require('path');
 
-const app = express();
-const server = http.createServer(app);
-require('./primus')(server);
+const mode = (process.env.NODE_ENV) ? process.env.NODE_ENV : 'default';
 
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(helmet({ noCache: true }));
+const fast = fastify();
+require('./primus')(fast.server);
 
-require('./routes')(app);
+fast.register(require('fastify-cors'));
+fast.register(require('fastify-helmet'));
 
-module.exports = server;
+fast.register(require(path.resolve('./src/controllers/home')));
+fast.register(require(path.resolve('./src/controllers/dashboard')), { prefix: '/dashboard' });
+fast.register(require(path.resolve('./src/controllers/workspace')), { prefix: '/workspace' });
+fast.register(require(path.resolve('./src/controllers/channels')), { prefix: '/channels' });
+fast.register(require(path.resolve('./src/controllers/terminals')), { prefix: '/terminals' });
+
+const listen = async (port, ip) => {
+  try {
+    const address = await fast.listen(port, ip);
+    console.log(`[${mode.toUpperCase()}] Mavex API running on: ${address}`);
+  } catch (err) {
+    console.log(err);
+    process.exit(1);
+  }
+};
+
+module.exports = { fast, listen };

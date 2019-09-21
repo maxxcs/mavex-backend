@@ -1,6 +1,6 @@
 const path = require('path');
-const server = require('./src/config/server');
-const primus = require('./src/config/primus')(server);
+const { fast } = require('./src/config/server');
+const primus = require('./src/config/primus')(fast.server);
 
 const filename = '/socket.js'
 

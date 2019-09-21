@@ -1,7 +1,9 @@
-const server = require('./src/config/server');
+const path = require('path');
 
-const PORT = process.env.PORT || 8000;
+const { port, host } = require(path.resolve('./settings.json'));
+const { fast, listen } = require('./src/config/server');
 
-server.listen(PORT, () => {
-  console.log(`Mavex API running at PORT ${PORT}...`);
-});
+const PORT = process.env.PORT || port;
+const HOST = process.env.PORT || host;
+
+listen(PORT, HOST);
