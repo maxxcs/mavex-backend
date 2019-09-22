@@ -43,7 +43,7 @@ module.exports = server => {
     next();
   });
 
-  primus.validate('xve:requestSync', (data, next) => {
+  primus.validate('cix:requestSync', (data, next) => {
     next();
   });
 
@@ -64,11 +64,11 @@ module.exports = server => {
     spark.on('editor:broadcastOperation', async operation => {
       const users = await Store.getUsersToBroadcastOnFile(null, spark.id);
       setTimeout(() => {
-        primus.forward.sparks(users, { emit: ['server:executeOperation', operation] }, (err, result) => {});
+        primus.forward.sparks(users, { emit: ['server:executeOperation', operation] }, (err, result) => { });
       }, 1);
     });
 
-    spark.on('xve:requestSync', async data => {
+    spark.on('cix:requestSync', async data => {
       console.log(data);
     });
 

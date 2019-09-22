@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const mongoose = require('../config/database');
 
 const UserSchema = new mongoose.Schema({
@@ -60,6 +61,28 @@ const UserSchema = new mongoose.Schema({
     type: Number
   }
 });
+
+UserSchema.pre('save', function (next) {
+  const user = this;
+  if (!user.isModified('password')) {
+    return next();
+  }
+  bcrypt.hash(user.password, 10).then((hashedPassword) => {
+    user.password = hashedPassword;
+    next();
+  });
+}, function (err) {
+  next(err);
+});
+
+UserSchema.methods.comparePassword = async function (candidatePassword) {
+  try {
+    const isMatch = await bcrypt.compare(candidatePassword, this.password);
+    return isMatch;
+  } catch (err) {
+    return err;
+  }
+};
 
 const UserModel = mongoose.model('User', UserSchema);
 
