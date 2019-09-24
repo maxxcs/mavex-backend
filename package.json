@@ -27,6 +27,7 @@
     "ws": "^7.1.2"
   },
   "devDependencies": {
-    "cross-env": "^6.0.0"
+    "cross-env": "^6.0.0",
+    "nodemon": "^1.19.2"
   }
 }

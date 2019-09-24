@@ -1,3 +1,5 @@
+const ProjectModel = require('../models/project');
+
 const dashboard = async (fast, opts, done) => {
   fast.get('/', async (request, reply) => {
     try {
