@@ -13,7 +13,7 @@ function sign(payload) {
 
 function verify(token) {
   return new Promise((resolve, reject) => {
-    jwt.verify(token, SECRETE, { algorithm: 'HS256' }, (err, decoded) => {
+    jwt.verify(token, SECRET, { algorithm: 'HS256' }, (err, decoded) => {
       if (err) return reject({ message: 'Something unexpected has occurred.' });
       return resolve(decoded);
     });

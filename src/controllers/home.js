@@ -18,6 +18,7 @@ const home = async (fast, opts, done) => {
     try {
       reply.type('application/json');
       const user = await UserModel.findOne({ username: request.body.username }).select('+password');
+
       if (!user) {
         throw new Error('Username or password is invalid.');
       } else {
@@ -25,6 +26,7 @@ const home = async (fast, opts, done) => {
           throw new Error('Username or password is invalid.');
         } else {
           const token = await sign({
+            id: user.id,
             username: user.username,
             email: user.email,
             permission: user.level
@@ -32,6 +34,7 @@ const home = async (fast, opts, done) => {
           return { token };
         }
       }
+
     } catch (err) {
       reply.type('application/json');
       reply.code(400);
@@ -43,13 +46,13 @@ const home = async (fast, opts, done) => {
   fast.post('/register', async (request, reply) => {
     try {
       reply.type('application/json');
-      console.log(request.body);
+
       const user = await UserModel.create({
         username: request.body.username,
         email: request.body.email,
         password: request.body.password
       });
-      console.log(user);
+
       if (!user)
         return { registered: false };
       else

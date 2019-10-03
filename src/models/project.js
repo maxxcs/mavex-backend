@@ -1,10 +1,37 @@
 const mongoose = require('../config/database');
 
+const PrivilegeSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    minlength: 3,
+    trim: true
+  },
+  privileges: {
+    admin: Number,
+    files: {
+      read: Number,
+      write: Number,
+      edit: Number
+    },
+    channels: {
+      read: Number,
+      write: Number,
+      edit: Number
+    },
+    terminals: {
+      read: Number,
+      write: Number,
+      edit: Number
+    }
+  }
+});
+
 const ProjectSchema = new mongoose.Schema({
   name: {
     type: String
   },
-  public: {
+  isPublic: {
     type: Boolean
   },
   createdAt: {
@@ -20,41 +47,20 @@ const ProjectSchema = new mongoose.Schema({
   owner: {
     type: {
       id: String,
-      username: String
+      username: String,
+      email: String,
+      permission: String
     }
   },
   privilegeSchemas: {
-    type: [
-      {
-        id: String,
-        name: String,
-        privileges: {
-          admin: Number,
-          files: {
-            read: Number,
-            write: Number,
-            edit: Number
-          },
-          channels: {
-            read: Number,
-            write: Number,
-            edit: Number
-          },
-          terminals: {
-            read: Number,
-            write: Number,
-            edit: Number
-          }
-        }
-      }
-    ]
+    type: [PrivilegeSchema]
   },
   users: {
     type: [
       {
         id: String,
         username: String,
-        privilegeGroup: String
+        privilegeGroup: PrivilegeSchema
       }
     ]
   },
