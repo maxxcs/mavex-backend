@@ -12,10 +12,27 @@ const dashboard = async (fast, opts, done) => {
       return { projects };
 
     } catch (err) {
-      reply.type('application/json');
       reply.code(400);
-      console.log(err);
+      console.error(err);
       return err;
+    }
+  });
+
+  fast.post('/join-project', async (request, reply) => {
+    try {
+      reply.type('application/json');
+
+      if (!request.body.projectId || !request.body.token)
+        throw new Error('Badly formatted entries.');
+      const user = await verify(request.body.token);
+      const project = await ProjectModel.findById(projectId);
+
+      return project;
+
+    } catch (err) {
+      reply.code(400);
+      console.error(err);
+      return { message: err.message };
     }
   });
 
@@ -26,8 +43,8 @@ const dashboard = async (fast, opts, done) => {
       if (!request.body.project || !request.body.token)
         throw new Error('Badly formatted entries.');
 
-      let adminPrivileges = null;
       const user = await verify(request.body.token);
+      let adminPrivileges = null;
       const submittedProject = {
         name: request.body.project.name,
         isPublic: request.body.project.isPublic,
@@ -97,9 +114,8 @@ const dashboard = async (fast, opts, done) => {
       return { created: true, project: projectUpdated };
 
     } catch (err) {
-      reply.type('application/json');
       reply.code(400);
-      console.log(err);
+      console.error(err);
       return { created: false, message: err.message };
     }
   });
@@ -110,9 +126,8 @@ const dashboard = async (fast, opts, done) => {
       return { controller: 'dashboard', location: 'index' };
 
     } catch (err) {
-      reply.type('application/json');
       reply.code(400);
-      console.log(err);
+      console.error(err);
       return err;
     }
   });
@@ -123,9 +138,8 @@ const dashboard = async (fast, opts, done) => {
       return { controller: 'dashboard', location: 'index' };
 
     } catch (err) {
-      reply.type('application/json');
       reply.code(400);
-      console.log(err);
+      console.error(err);
       return err;
     }
   });

@@ -5,8 +5,7 @@ const workspace = async (fast, opts, done) => {
       return { controller: 'workspace', location: 'index' };
 
     } catch (err) {
-      reply.type('application/json');
-      console.log(err);
+      console.error(err);
       return err;
     }
   });
@@ -17,8 +16,7 @@ const workspace = async (fast, opts, done) => {
       return { controller: 'workspace', location: 'file' };
 
     } catch (err) {
-      reply.type('application/json');
-      console.log(err);
+      console.error(err);
       return err;
     }
   });

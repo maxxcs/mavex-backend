@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const SECRET = 'E234ASER423S4E234S23E4S23D4F23S423R42T3432GF4D23H4T324D'; // Very secret, so much protection
+const SECRET = 'mavex'; // Very secret, so much protection
 
 function sign(payload) {
   return new Promise((resolve, reject) => {

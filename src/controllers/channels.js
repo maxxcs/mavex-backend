@@ -5,8 +5,7 @@ const channels = async (fast, opts, done) => {
       return { controller: 'channels', location: 'index' };
 
     } catch (err) {
-      reply.type('application/json');
-      console.log(err);
+      console.error(err);
       return err;
     }
   });
@@ -17,8 +16,7 @@ const channels = async (fast, opts, done) => {
       return { controller: 'channels', location: 'env' };
 
     } catch (err) {
-      reply.type('application/json');
-      console.log(err);
+      console.error(err);
       return err;
     }
   });

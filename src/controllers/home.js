@@ -8,8 +8,7 @@ const home = async (fast, opts, done) => {
       return { controller: 'home', location: 'index' };
 
     } catch (err) {
-      reply.type('application/json');
-      console.log(err);
+      console.error(err);
       return err;
     }
   });
@@ -36,9 +35,8 @@ const home = async (fast, opts, done) => {
       }
 
     } catch (err) {
-      reply.type('application/json');
       reply.code(400);
-      console.log(err.message);
+      console.error(err.message);
       return { message: err.message };
     }
   });
@@ -59,9 +57,8 @@ const home = async (fast, opts, done) => {
         return { registered: true };
 
     } catch (err) {
-      reply.type('application/json');
       reply.code(400);
-      console.log(err.message);
+      console.error(err.message);
       return { message: err.message };
     }
   });
