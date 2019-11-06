@@ -20,7 +20,7 @@
     "ioredis": "^4.14.1",
     "jsonwebtoken": "^8.5.1",
     "metroplex": "^1.0.1",
-    "mongoose": "^5.7.1",
+    "mongoose": "^5.7.5",
     "omega-supreme": "^3.0.0",
     "primus": "^7.3.3",
     "primus-emit": "^1.0.0",
