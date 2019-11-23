@@ -23,11 +23,17 @@ const dashboard = async (fast, opts, done) => {
       reply.type('application/json');
 
       if (!request.body.projectId || !request.body.token)
-        throw new Error('Badly formatted entries.');
-      const user = await verify(request.body.token);
-      const project = await ProjectModel.findById(projectId);
+        throw new Error('Badly formatted entries');
 
-      return project;
+      const user = await verify(request.body.token);
+      const project = await ProjectModel.findById(request.body.projectId);
+      // console.log(user);
+
+      if (project.owner.id === user.id) {
+        return { project };
+      } else {
+        throw new Error('Not authorized');
+      }
 
     } catch (err) {
       reply.code(400);
@@ -41,7 +47,7 @@ const dashboard = async (fast, opts, done) => {
       reply.type('application/json');
 
       if (!request.body.project || !request.body.token)
-        throw new Error('Badly formatted entries.');
+        throw new Error('Badly formatted entries');
 
       const user = await verify(request.body.token);
       let adminPrivileges = null;

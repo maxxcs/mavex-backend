@@ -1,4 +1,4 @@
-const mongoose = require('../config/database');
+const mongoose = require('../config/hard-database');
 
 const PrivilegeSchema = new mongoose.Schema({
   name: {

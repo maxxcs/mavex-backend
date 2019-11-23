@@ -4,7 +4,7 @@ const path = require('path');
 const mode = (process.env.NODE_ENV) ? process.env.NODE_ENV : 'default';
 
 const fast = fastify();
-require('./primus')(fast.server);
+require('./socket')(fast.server);
 
 fast.register(require('fastify-cors'));
 fast.register(require('fastify-helmet'));
