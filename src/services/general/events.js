@@ -4,9 +4,10 @@ const { sign, verify } = require('../../config/auth');
 module.exports = (primus, spark) => {
   spark.on('project:join', async ({ projectId, token }) => {
     try {
-      const user = await verify(token);
-      const project = await GenenralStore.addUserOnProject(projectId, user);
-      spark.emit('project:userJoined');
+      const { id, username } = await verify(token);
+      await GenenralStore.addUserOnProject(projectId, { id, username, socket: spark.id });
+
+      spark.emit('project:userJoined', { username });
 
     } catch (err) {
       console.log(err);

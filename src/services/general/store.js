@@ -1,22 +1,23 @@
 const store = require('../../config/soft-database');
+const ProjectModel = require('../../models/project');
 
 class GenenralStore {
-  static addUserOnProject(projectId, user) {
+  static openProject(projectId) {
     return new Promise(async (resolve, reject) => {
       try {
-        const project = await store.get(`project:${projectId}`);
+        resolve();
 
-        if (project) {
-          const users = await store.smembers(`project:${projectId}:users`);
-          users.push(user.id);
-          await store.sadd(`project:${projectId}:users`, users);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
 
-          resolve();
-        } else {
-          //  create a project instance
-
-          resolve();
-        }
+  static addUserOnProject(projectId, { id, username, socket }) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        await store.set(`project:${projectId}:user:${id}`, JSON.stringify({ username, socket }));
+        resolve();
 
       } catch (err) {
         reject(err);

@@ -29,11 +29,18 @@ const dashboard = async (fast, opts, done) => {
       const project = await ProjectModel.findById(request.body.projectId);
       // console.log(user);
 
-      if (project.owner.id === user.id) {
+      if (project.isPublic)
         return { project };
-      } else {
-        throw new Error('Not authorized');
+
+      if (project.owner.id === user.id)
+        return { project };
+
+      for (let peer of project.users) {
+        if (peer._id === user.id)
+          return { project };
       }
+
+      throw new Error('Not authorized');
 
     } catch (err) {
       reply.code(400);
@@ -111,7 +118,7 @@ const dashboard = async (fast, opts, done) => {
           return adminPrivileges = value;
       });
       project.users.push({
-        id: project.owner.id,
+        _id: project.owner.id,
         username: project.owner.username,
         privilegeGroup: adminPrivileges
       });
