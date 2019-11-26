@@ -7,8 +7,8 @@ module.exports = (primus, spark) => {
       const { id, username } = await verify(token);
       await GenenralStore.addUserOnProject(projectId, { id, username, socket: spark.id });
 
-      spark.emit('project:userJoined', { username });
-
+      const sockets = await GenenralStore.getSocketsToBroadcastOnProject(projectId);
+      primus.forward.sparks(sockets, { emit: ['project:userJoined', { username }] }, (err, result) => { });
     } catch (err) {
       console.log(err);
     }

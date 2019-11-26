@@ -2,10 +2,16 @@ const store = require('../../config/soft-database');
 const ProjectModel = require('../../models/project');
 
 class GenenralStore {
-  static openProject(projectId) {
+  static getSocketsToBroadcastOnProject(projectId) {
     return new Promise(async (resolve, reject) => {
       try {
-        resolve();
+        const list = await store.keys(`project:${projectId}:user:*`);
+        const users = await store.mget(list);
+        const sockets = users.map(user => {
+          const { socket } = JSON.parse(user);
+          return socket;
+        });
+        resolve(sockets);
 
       } catch (err) {
         reject(err);

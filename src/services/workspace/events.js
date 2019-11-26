@@ -1,10 +1,40 @@
+const { sign, verify } = require('../../config/auth');
+const ProjectModel = require('../../models/project');
 const WorkspaceStore = require('./store');
+const GenenralStore = require('../general/store');
 
 module.exports = (primus, spark) => {
 
-  spark.on('file:create', async data => {
+  spark.on('file:create', async ({ token, filename, actualNode, projectId }) => {
+    try {
+      token = await verify(token);
+      const project = await ProjectModel.findById(projectId);
+      const [user] = project.users.filter(user => user._id.toString() === token.id);
 
-    spark.emit('file:created');
+      const file = {
+        filename,
+        permissions: user.privilegeGroup.privileges.files,
+        data: []
+      };
+
+      if (actualNode) {
+        if (actualNode.children) {
+          file.parent = actualNode.id;
+        } else {
+          file.parent = actualNode.parent;
+        }
+      } else {
+        file.parent = null;
+      }
+
+      project.files.push(file);
+      const projectUpdated = await project.save();
+      const sockets = await GenenralStore.getSocketsToBroadcastOnProject(projectId);
+      primus.forward.sparks(sockets, { emit: ['file:created', { files: projectUpdated.files }] }, (err, result) => { });
+
+    } catch (err) {
+      console.error(err);
+    }
   });
 
   spark.on('file:delete', async data => {

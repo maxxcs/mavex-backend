@@ -58,7 +58,6 @@ const ProjectSchema = new mongoose.Schema({
   users: {
     type: [
       {
-        id: String,
         username: String,
         privilegeGroup: PrivilegeSchema
       }
@@ -67,22 +66,21 @@ const ProjectSchema = new mongoose.Schema({
   files: {
     type: [
       {
-        id: String,
         filename: String,
-        extension: String,
         path: String,
+        parent: String,
         permissions: {
           read: Number,
           write: Number,
           edit: Number
-        }
+        },
+        data: []
       }
     ]
   },
   channels: {
     type: [
       {
-        id: String,
         name: String,
         type: Number,
         permissions: {
@@ -96,7 +94,6 @@ const ProjectSchema = new mongoose.Schema({
   terminals: {
     type: [
       {
-        id: String,
         name: String,
         type: Number,
         permissions: {
