@@ -67,13 +67,14 @@ const ProjectSchema = new mongoose.Schema({
     type: [
       {
         filename: String,
-        path: String,
+        kind: String,
         parent: String,
         permissions: {
           read: Number,
           write: Number,
           edit: Number
         },
+        children: [],
         data: []
       }
     ]
@@ -82,7 +83,7 @@ const ProjectSchema = new mongoose.Schema({
     type: [
       {
         name: String,
-        type: Number,
+        kind: Number,
         permissions: {
           read: Number,
           write: Number,
@@ -95,7 +96,7 @@ const ProjectSchema = new mongoose.Schema({
     type: [
       {
         name: String,
-        type: Number,
+        kind: Number,
         permissions: {
           read: Number,
           write: Number,

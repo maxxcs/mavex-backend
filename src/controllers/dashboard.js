@@ -8,8 +8,9 @@ const dashboard = async (fast, opts, done) => {
 
       const user = await verify(request.body.token);
       const projects = await ProjectModel.find({ 'owner.id': user.id });
+      const publicProjects = await ProjectModel.find({ isPublic: true });
 
-      return { projects };
+      return { projects, publicProjects };
 
     } catch (err) {
       reply.code(400);

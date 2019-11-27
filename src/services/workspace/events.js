@@ -5,15 +5,17 @@ const GenenralStore = require('../general/store');
 
 module.exports = (primus, spark) => {
 
-  spark.on('file:create', async ({ token, filename, actualNode, projectId }) => {
+  spark.on('file:create', async ({ type, token, filename, actualNode, projectId }) => {
     try {
       token = await verify(token);
       const project = await ProjectModel.findById(projectId);
       const [user] = project.users.filter(user => user._id.toString() === token.id);
-
+      console.log(type);
       const file = {
         filename,
+        kind: type,
         permissions: user.privilegeGroup.privileges.files,
+        children: [],
         data: []
       };
 
@@ -42,9 +44,16 @@ module.exports = (primus, spark) => {
     spark.emit('file:deleted');
   });
 
-  spark.on('file:open', async data => {
-    await WorkspaceStore.addUserOnFile(null, spark.id);
-    spark.emit('file:userJoined');
+  spark.on('file:open', async ({ projectId, file, token }) => {
+    try {
+      const { id, username } = await verify(token);
+      console.log({ projectId, file, token });
+      await WorkspaceStore.addUserOnFile(projectId, file.id, { id, username, socket: spark.id });
+      spark.emit('file:userJoined');
+
+    } catch (err) {
+      console.error(err);
+    }
   });
 
   spark.on('file:write', async data => {
