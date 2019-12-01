@@ -30,6 +30,23 @@ class GenenralStore {
       }
     });
   }
+
+  static removeUser(userId) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const userProjects = await store.keys(`project:*:user:${userId}`);
+        const userFiles = await store.keys(`file:*:user:${userId}`);
+        const itensToRemove = [...userFiles, ...userProjects]
+        if (itensToRemove.length > 0)
+          await store.del(itensToRemove);
+
+        resolve();
+
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
 }
 
 module.exports = GenenralStore;

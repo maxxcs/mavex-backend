@@ -6,4 +6,4 @@ const ChannelSchema = new mongoose.Schema({
 
 const ChannelModel = mongoose.model('Channel', ChannelSchema);
 
-export default ChannelModel;
+module.exports = ChannelModel;

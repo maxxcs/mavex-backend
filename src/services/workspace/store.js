@@ -17,12 +17,21 @@ class WorkspaceStore {
     });
   }
 
-  static getUsersToBroadcastOnFile(file, sender) {
+  static getSocketsToBroadcastOnFile(fileId, userId) {
     return new Promise(async (resolve, reject) => {
       try {
-        const users = await store.smembers('file:5be3d14300ab840090de0352:users');
-        const usersToSend = users.filter(user => user !== sender);
-        resolve(usersToSend);
+        let sender = await store.get(`file:${fileId}:user:${userId}`);
+        sender = JSON.parse(sender);
+        if (!sender) reject('User not found');
+
+        const list = await store.keys(`file:${fileId}:user:*`);
+        const users = await store.mget(list);
+        const sockets = users.map(user => {
+          const { socket } = JSON.parse(user);
+          return socket;
+        });
+        const socketsToSend = sockets.filter(socket => socket !== sender.socket);
+        resolve(socketsToSend);
 
       } catch (err) {
         reject(err);
@@ -30,16 +39,11 @@ class WorkspaceStore {
     });
   }
 
-  static getSocketsToBroadcastOnFile(projectId) {
+  static removeUserFromFile(fileId, userId) {
     return new Promise(async (resolve, reject) => {
       try {
-        const list = await store.keys(`project:${projectId}:user:*`);
-        const users = await store.mget(list);
-        const sockets = users.map(user => {
-          const { socket } = JSON.parse(user);
-          return socket;
-        });
-        resolve(sockets);
+        await store.del([`file:${fileId}:user:${userId}`]);
+        resolve();
 
       } catch (err) {
         reject(err);
