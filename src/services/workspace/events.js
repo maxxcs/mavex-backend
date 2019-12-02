@@ -53,9 +53,16 @@ module.exports = (primus, spark) => {
     }
   });
 
-  spark.on('file:delete', async data => {
+  spark.on('file:delete', async ({ token, projectId, fileId }) => {
+    const { id, username } = await verify(token);
+    const project = await ProjectModel.findById(projectId);
 
-    spark.emit('file:deleted');
+    project.files = project.files.filter(file => file._id.toString() !== fileId);
+    await project.save();
+    await FileModel.findByIdAndRemove(fileId);
+
+    const sockets = await GenenralStore.getSocketsToBroadcastOnProject(projectId);
+    primus.forward.sparks(sockets, { emit: ['file:deleted', { files: project.files }] }, (err, result) => { });
   });
 
   spark.on('file:open', async ({ projectId, file, token }) => {
