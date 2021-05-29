@@ -23,7 +23,7 @@
     "omega-supreme": "^3.0.0",
     "primus": "^7.3.4",
     "primus-emit": "^1.0.0",
-    "ws": "^7.2.0"
+    "ws": "^7.4.6"
   },
   "devDependencies": {
     "cross-env": "^6.0.3",
